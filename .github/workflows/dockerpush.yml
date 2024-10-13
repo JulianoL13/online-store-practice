@@ -49,10 +49,17 @@ jobs:
       - name: Create a Git tag
         run: |
           echo "Creating tag: v${{ steps.determine_version.outputs.version }}"
-          git tag v${{ steps.determine_version.outputs.version }}
+
+          git tag -f v${{ steps.determine_version.outputs.version }}
+
           echo "Tag created: $(git tag -l)"
+
           echo "Pushing tag: v${{ steps.determine_version.outputs.version }}"
-          git push origin v${{ steps.determine_version.outputs.version }} || {
+
+          git push origin v${{ steps.determine_version.outputs.version }} --force || {
+
             echo "Error pushing tag: $?"
+
             exit 1
+
           }
