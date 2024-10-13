@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-auto-increment");
 
 const productSchema = new mongoose.Schema({
   id: {
@@ -23,16 +22,6 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-autoIncrement.initialize(mongoose.connection);
-
-productSchema.plugin(autoIncrement.plugin, {
-  model: "User ",
-
-  field: "id",
-  startAt: 1,
-});
-
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;

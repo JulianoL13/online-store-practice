@@ -7,8 +7,8 @@ app.set("views", "./views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const UserController = require("./controllers/UserController");
-const ProductController = require("./controllers/ProductController");
+const UserController = require("./controllers/userController");
+const ProductController = require("./controllers/productController");
 
 app.use("/users", UserController);
 app.use("/products", ProductController);
