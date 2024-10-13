@@ -43,12 +43,14 @@ jobs:
             context: .
             push: true
             tags: |
-              laranjeirajuliano/online-store:${{ steps.semantic_release.outputs }}
+              laranjeirajuliano/online-store:v1.0.1
               laranjeirajuliano/online-store:latest
               
       - name: Log version output
+      
         run: |
           echo "Version output: ${{ steps.semantic_release.outputs.version }}"
+          echo "Semantic release output: ${{ steps.semantic_release.outputs }}"
           
       - name: Create a Git tag
         run: |
