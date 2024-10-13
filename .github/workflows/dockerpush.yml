@@ -31,7 +31,7 @@ jobs:
             elif [[ $changes =~ chore ]]; then
               echo ::set-output name=version::$latest_tag
             else
-              echo ::set-output name=version::$latest_tag
+              echo ::set-output name=version::$latest_tag | awk -F. '{ print $1"."$2"."($3+1) }'
             fi
           else
             echo ::set-output name=version::1.0.0
