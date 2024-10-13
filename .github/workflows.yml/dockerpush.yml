@@ -6,9 +6,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu:20.04
     steps:
       - uses: actions/checkout@v4.2.1
+
+      - name: Docker Login
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{ secrets.DOCKERUSER }}
+          password: ${{ secrets.PASSWORD }}
 
       - name: Determine version
         id: determine_version
@@ -39,6 +45,6 @@ jobs:
             laranjeirajuliano/online-store:latest
 
       - name: Create a Git tag
-        run: git tag v${{ steps.determine_version.outputs.version }}
+        run: git tag v${{ steps.determine_version.outputs.version }}-${{ github.sha }}
       - name: Push the Git tag
-        run: git push origin v${{ steps.determine_version.outputs.version }}
+        run: git push origin v${{ steps.determine_version.outputs.version }}-${{ github.sha }}
