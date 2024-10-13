@@ -43,7 +43,7 @@ jobs:
             context: .
             push: true
             tags: |
-              laranjeirajuliano/online-store:v1.2.3
+              laranjeirajuliano/online-store:${{ steps.semantic_release.outputs }}
               laranjeirajuliano/online-store:latest
               
       - name: Log version output
