@@ -29,3 +29,4 @@ jobs:
         with:
           context: .
           push: true
+          tags: ${{ github.sha }}-latest
