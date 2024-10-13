@@ -40,16 +40,16 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
         with:
-          context: .
-          push: true
+            context: .
+            push: true
+            tags: |
+              laranjeirajuliano/online-store:v1.2.3
+              laranjeirajuliano/online-store:latest
+              
       - name: Log version output
         run: |
           echo "Version output: ${{ steps.semantic_release.outputs.version }}"
           
-          tags: |
-            laranjeirajuliano/online-store:v1.2.3
-            laranjeirajuliano/online-store:latest
-
       - name: Create a Git tag
         run: |
           echo "Creating tag: v${{ steps.semantic_release.outputs.version }}"
