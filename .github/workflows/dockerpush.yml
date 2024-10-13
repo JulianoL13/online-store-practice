@@ -47,7 +47,12 @@ jobs:
             laranjeirajuliano/online-store:latest
 
       - name: Create a Git tag
-        run: git tag v${{ steps.determine_version.outputs.version }}
-
-      - name: Push the Git tag
-        run: git push origin v${{ steps.determine_version.outputs.version }}
+        run: |
+          echo "Creating tag: v${{ steps.determine_version.outputs.version }}"
+          git tag v${{ steps.determine_version.outputs.version }}
+          echo "Tag created: $(git tag -l)"
+          echo "Pushing tag: v${{ steps.determine_version.outputs.version }}"
+          git push origin v${{ steps.determine_version.outputs.version }} || {
+            echo "Error pushing tag: $?"
+            exit 1
+          }
