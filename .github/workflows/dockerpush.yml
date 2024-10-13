@@ -42,7 +42,7 @@ jobs:
 
       - name: Squash Image
         run: |
-          docker-squash -t laranjeirajuliano/online-store:latest backend-storage:${{ env.short_sha }}
+          docker-squash -t laranjeirajuliano/online-store:${{ env.short_sha }} backend-storage:${{ env.short_sha }}
 
       - name: Tag Latest
         run: |
