@@ -16,3 +16,4 @@ app.use("/products", ProductController);
 app.listen(port, () => {
   console.log(`Server started in http://localhost:${port}`);
 });
+console.log("Uau");
