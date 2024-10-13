@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: false
-          tags: backend-storage:${{ env.short_sha }}
+          tags: backend-storage:${{ env.SHORT_SHA }}
 
       - name: Install Dive
         run: |
