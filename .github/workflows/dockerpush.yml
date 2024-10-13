@@ -16,17 +16,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERUSER }}
           password: ${{ secrets.PASSWORD }}
+
+      - name: Build Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: backend-storage:${{ env.short_sha }}
 
       - name: Install Dive
         run: |
@@ -41,19 +42,17 @@ jobs:
 
       - name: Squash Image
         run: |
-          docker-squash -t my-squashed-image:latest .
+          docker-squash -t laranjeirajuliano/online-store:latest backend-storage:${{ env.SHORT_SHA }}
 
       - name: Tag Latest
         run: |
-          docker tag my-squashed-imag:latest ${{ secrets.DOCKERUSER }}/online-store:${{ env.SHORT_SHA }}
+          docker tag laranjeirajuliano/online-store:${{ env.SHORT_SHA }} laranjeirajuliano/online-store:latest
 
       - name: Dive Inspection
         run: |
           CI=true dive ${{ secrets.DOCKERUSER }}/online-store:${{ env.SHORT_SHA }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ${{ env.DOCKERUSER }}/online-store:${{ env.SHORT_SHA }}
+      - name: Push Image
+        run: |
+          docker push laranjeirajuliano/online-store:${{ env.SHORT_SHA }}
+          docker push laranjeirajuliano/online-store:latest
