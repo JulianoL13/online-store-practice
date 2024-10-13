@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-l atest
+    runs-on: ubuntu-latest
     env:
       DOCKERUSER: ${{ secrets.DOCKERUSER }}
       PASSWORD: ${{ secrets.PASSWORD }}
