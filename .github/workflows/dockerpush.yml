@@ -7,6 +7,8 @@ on:
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 jobs:
   build:
@@ -19,8 +21,8 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3.3.0
         with:
-          username: ${{ secrets.DOCKERUSER }}
-          password: ${{ secrets.PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Install dependencies
         run: |
@@ -31,7 +33,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "GH._TOKEN: $GH_TOKEN"
+          echo "GH_TOKEN: $GH_TOKEN"
           echo "NPM_TOKEN: $NPM_TOKEN"
           npx semantic-release
 
@@ -41,8 +43,8 @@ jobs:
           context: .
           push: true
           tags: |
-            laranjeirajuliano/online-store:${{ steps.semantic_release.outputs.version }}
-            laranjeirajuliano/online-store:latest
+            ${{ secrets.DOCKER_USERNAME }}/online-store:${{ steps.semantic_release.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/online-store:latest
 
       - name: Create a Git tag
         run: |
