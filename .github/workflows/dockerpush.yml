@@ -29,4 +29,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ github.sha }}-latest
+          tags: ${{ github.sha }}-latest, ${{ secrets.DOCKERUSER }}/online-store:latest
