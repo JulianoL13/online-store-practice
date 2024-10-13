@@ -43,8 +43,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.DOCKER_USER }}/online-store:${{ steps.semantic_release.outputs.version }}
-            ${{ env.DOCKER_USER }}/online-store:latest
+            laranjeirajuliano/online-store:${{ steps.semantic_release.outputs.version }}
+            laranjeirajuliano/online-store:latest
 
       - name: Create a Git tag
         run: |
