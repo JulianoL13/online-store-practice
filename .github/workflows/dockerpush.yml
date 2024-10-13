@@ -10,7 +10,7 @@ jobs:
     env:
       DOCKERUSER: ${{ secrets.DOCKERUSER }}
       PASSWORD: ${{ secrets.PASSWORD }}
-      SHORT_SHA: ${{ github.sha }}[:5]
+      run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
 
     steps:
       - name: Checkout
