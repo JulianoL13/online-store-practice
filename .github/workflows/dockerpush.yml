@@ -57,9 +57,6 @@ jobs:
           echo "Pushing tag: v${{ steps.semantic_release.outputs.version }}"
 
           git push origin v${{ steps.semantic_release.outputs.version }} --force || {
-
             echo "Error pushing tag: $?"
-
             exit 1
-
           }
