@@ -19,19 +19,20 @@ jobs:
       - name: Determine version
         id: determine_version
         run: |
-          latest_tag=$(git describe --tags --abbrev=0 --match "v[0-9]*.[0-9]*.[0-9]*")
-
-          changes=$(git log --oneline --since="$latest_tag" --pretty="%s")
-          if [[ $changes =~ feat ]]; then
-            echo ::set-output name=version::$latest_tag | awk -F. '{ print $1"."($2+1)".0" }'
-          elif [[ $changes =~ fix ]]; then
-            echo ::set-output name=version::$latest_tag | awk -F. '{ print $1"."$2"."($3+1) }'
-          elif [[ $changes =~ chore ]]; then
-            # For chore commits, keep the same version
-            echo ::set-output name=version::$latest_tag
+          if [[ -n "$(git describe --tags --abbrev=0 --match "v[0-9]*.[0-9]*.[0-9]*")" ]]; then
+            latest_tag=$(git describe --tags --abbrev=0 --match "v[0-9]*.[0-9]*.[0-9]*")
+            changes=$(git log --oneline --since="$latest_tag" --pretty="%s")
+            if [[ $changes =~ feat ]]; then
+              echo ::set-output name=version::$latest_tag | awk -F. '{ print $1"."($2+1)".0" }'
+            elif [[ $changes =~ fix ]]; then
+              echo ::set-output name=version::$latest_tag | awk -F. '{ print $1"."$2"."($3+1) }'
+            elif [[ $changes =~ chore ]]; then
+              echo ::set-output name=version::$latest_tag
+            else
+              echo ::set-output name=version::$latest_tag
+            fi
           else
-            # Handle other commit types as needed
-            echo ::set-output name=version::$latest_tag
+            echo ::set-output name=version::1.0.0
           fi
 
       - name: Build and push Docker images
@@ -45,6 +46,7 @@ jobs:
             laranjeirajuliano/online-store:latest
 
       - name: Create a Git tag
-        run: git tag v${{ steps.determine_version.outputs.version }}-${{ github.sha }}
+        run: git tag v${{ steps.determine_version.outputs.version }}
+
       - name: Push the Git tag
-        run: git push origin v${{ steps.determine_version.outputs.version }}-${{ github.sha }}
+        run: git push origin v${{ steps.determine_version.outputs.version }}
