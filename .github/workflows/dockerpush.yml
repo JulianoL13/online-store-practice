@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 env:
-  GH_TOKEN: ${{ secrets.npm }}
-  NPM_TOKEN: ${{ secrets.npmnpmnpm }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
   build:
@@ -27,6 +27,9 @@ jobs:
           yarn install
 
       - name: Semantic Release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npx semantic-release
 
