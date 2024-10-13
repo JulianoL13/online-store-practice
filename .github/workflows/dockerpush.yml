@@ -7,12 +7,12 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      DOCKERUSER: ${{ secrets.DOCKERUSER }}
-      PASSWORD: ${{ secrets.PASSWORD }}
-      run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
-
+    
     steps:
+      - name: Generate Short SHA
+        id: sha
+        run: echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: false
-          tags: backend-storage:${{ env.SHORT_SHA }}
+          tags: backend-storage:${{ env.short_sha }}
 
       - name: Install Dive
         run: |
@@ -42,17 +42,17 @@ jobs:
 
       - name: Squash Image
         run: |
-          docker-squash -t laranjeirajuliano/online-store:latest backend-storage:${{ env.SHORT_SHA }}
+          docker-squash -t laranjeirajuliano/online-store:latest backend-storage:${{ env.short_sha }}
 
       - name: Tag Latest
         run: |
-          docker tag laranjeirajuliano/online-store:${{ env.SHORT_SHA }} laranjeirajuliano/online-store:latest
+          docker tag laranjeirajuliano/online-store:${{ env.short_sha }} laranjeirajuliano/online-store:latest
 
       - name: Dive Inspection
         run: |
-          CI=true dive ${{ secrets.DOCKERUSER }}/online-store:${{ env.SHORT_SHA }}
+          CI=true dive ${{ secrets.DOCKERUSER }}/online-store:${{ env.short_sha }}
 
       - name: Push Image
         run: |
-          docker push laranjeirajuliano/online-store:${{ env.SHORT_SHA }}
+          docker push laranjeirajuliano/online-store:${{ env.short_sha }}
           docker push laranjeirajuliano/online-store:latest
